@@ -7,6 +7,7 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Link } from 'react-router-dom';
 
 let starFillFlag;
+
 export default function CountryCardComponent(props) {
     starFillFlag = props.name === "Germany";
     return (
