@@ -1,36 +1,69 @@
 import * as React from 'react';
-import { Box, Stack, InputBase, IconButton, Paper } from '@mui/material';
+import { Box, Stack, InputBase, IconButton, Paper, Grid } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import RegionsDropDown from '../Components/DropdownComponent';
 import CardsContainer from '../Components/CardsGridComponent';
 import FavouratesListComponent from '../Components/SideBarComponent';
 import styled from 'styled-components';
-const StyledStack = styled(Stack)`
+import { styled as materialStyle } from '@mui/material/styles';
+
+const StyledMainLine = styled(Stack)`
+display:flex;
+justify-content: space-between;
 height:50px;
 @media (max-width: 900px) {
   height:150px;
 }
 `;
+
+const StyledStack = styled(Stack)`
+margin-top: 50px;
+padding-left: 0rem;
+padding-right: 0rem;  
+@media (max-width: 599px) {
+    padding-left: 3rem;
+    padding-right: 3rem; 
+};
+`;
+
+const StyledBox = styled(Box)`
+height: 100%;
+padding-left: 4.5rem;
+padding-right: 4.5rem;
+margin-top: 130px;
+`;
+
+const StyledPaper = materialStyle(Paper)({
+    display: 'flex',
+    width: '30vw',
+    minWidth: 400,
+    boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)'
+});
+
 export default function HomeContainer() {
     return (
         <React.Fragment>
-            <Box sx={{ height: '100%', px: '4.0rem', mt: '130px' }}>
-                <StyledStack direction={{ sm: 'column', md: 'row' }} spacing={'50px'}
-                    sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Paper elevation={6} component="form" sx={{ display: 'flex', width: '400px' }}>
+            <StyledBox alignItems="center">
+                <StyledMainLine direction={{ sm: 'column', md: 'row' }} spacing={'50px'}>
+                    <StyledPaper component="form">
                         <IconButton type="button" aria-label="search">
                             <SearchIcon />
                         </IconButton>
-                        <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Search for a country..." />
-                    </Paper>
+                        <InputBase placeholder="Search for a country..." />
+                    </StyledPaper>
                     <RegionsDropDown></RegionsDropDown>
+                </StyledMainLine>
+                <StyledStack direction={'row'}>
+                    <Grid container spacing={{ md: 6, xl: 8 }}>
+                        <Grid item md={3}>
+                            <FavouratesListComponent></FavouratesListComponent>
+                        </Grid>
+                        <Grid item sm={12} md={9}>
+                            <CardsContainer></CardsContainer>
+                        </Grid>
+                    </Grid>
                 </StyledStack>
-                <Stack direction={'row'} spacing={6} sx={{ mt: '50px' }}>
-                    <FavouratesListComponent></FavouratesListComponent>
-                    <CardsContainer></CardsContainer>
-                </Stack>
-
-            </Box>
+            </StyledBox>
         </React.Fragment>
     );
 }

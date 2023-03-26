@@ -1,17 +1,29 @@
 import * as React from 'react';
-import { Card, CardActions,CardActionArea, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
+import { Card, CardActions, CardActionArea, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
+import { ThemeProvider, styled } from '@mui/material/styles';
 import { THEME } from '../App';
 import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Link } from 'react-router-dom';
 
 let starFillFlag;
+const StyledCard = styled(Card)({
+    maxWidth: 300,
+    borderRadius: '6px',
+    boxShadow: '1px 2px 8px 1px rgba(0,0,0,0.1)',
+});
 
+const StyledIconButton = styled(IconButton)({
+    display: 'none',
+    '@media (max-width:889px)': {
+        display: 'block',
+    },
+    color: '#ffc400'
+});
 export default function CountryCardComponent(props) {
     starFillFlag = props.name === "Germany";
     return (
-        <Card sx={{ maxWidth: 300 }}>
+        <StyledCard>
             <CardActionArea component={Link} to="/details">
                 <CardMedia
                     component="img"
@@ -40,21 +52,21 @@ export default function CountryCardComponent(props) {
                     {favourateIcon()}
                 </CardActions>
             </CardActionArea>
-        </Card>
+        </StyledCard>
     );
 }
 
 function favourateIcon() {
     if (starFillFlag) {
         return (
-            <IconButton aria-label="favourate" sx={{ display: { xs: 'block', md: 'none' }, color: '#ffc400' }}>
+            <StyledIconButton aria-label="favourate">
                 <StarRoundedIcon />
-            </IconButton>
+            </StyledIconButton>
         );
     }
     return (
-        <IconButton aria-label="favourate" sx={{ display: { xs: 'block', md: 'none' }, color: '#ffc400' }}>
+        <StyledIconButton aria-label="favourate">
             <StarOutlineRoundedIcon />
-        </IconButton>
+        </StyledIconButton>
     );
 }

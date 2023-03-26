@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { OutlinedInput, MenuItem, Select } from '@mui/material';
+import { OutlinedInput, MenuItem, Select, FormControl } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const regions = [
     'Africa',
@@ -9,6 +10,16 @@ const regions = [
     'Oceania',
     'Favourites',
 ];
+
+const StyledSelect = styled(Select)({
+    width: 220,
+    height: 50,
+    backgroundColor: 'white',
+    color: '#111517',
+    fontWeight: 600,
+    boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)',
+    borderRadius: 'px'
+});
 export default function RegionsDropDown() {
     const [Selectedregion, setSelectedRegion] = React.useState([]);
 
@@ -22,26 +33,27 @@ export default function RegionsDropDown() {
     };
 
     return (
-        <Select
-            sx={{ width: 220, bgcolor: '#ffffff', boxShadow: 2, height: 50 }}
-            displayEmpty
-            value={Selectedregion}
-            onChange={handleChange}
-            input={<OutlinedInput />}
-            renderValue={(selected) => {
-                if (selected.length === 0) {
-                    return 'Filter By:';
-                }
-                return selected;
-            }}>
-            <MenuItem disabled value="">
-                <em>Filter By:</em>
-            </MenuItem>
-            {regions.map((region) => (
-                <MenuItem key={region} value={region}>
-                    {region}
+        <FormControl variant="filled">
+            <StyledSelect
+                displayEmpty
+                value={Selectedregion}
+                onChange={handleChange}
+                input={<OutlinedInput />}
+                renderValue={(selected) => {
+                    if (selected.length === 0) {
+                        return 'Filter By:';
+                    }
+                    return selected;
+                }}>
+                <MenuItem disabled value="">
+                    <em>Filter By:</em>
                 </MenuItem>
-            ))}
-        </Select>
+                {regions.map((region) => (
+                    <MenuItem key={region} value={region}>
+                        {region}
+                    </MenuItem>
+                ))}
+            </StyledSelect>
+        </FormControl>
     );
 }

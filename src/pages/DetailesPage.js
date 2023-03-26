@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Grid, Box, Typography, Button } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import KeyboardBackspaceRoundedIcon from '@mui/icons-material/KeyboardBackspaceRounded';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,81 +32,129 @@ export const DETAILS_THEME = createTheme({
     }
 });
 
+const BackButton = styled(Button)({
+    boxShadow: '3px 2px 8px 3px rgba(0,0,0,0.1)',
+    marginBottom: '50px',
+    paddingLeft: '30px',
+    paddingRight: '30px',
+    backgroundColor: "white"
+});
+
+const StyledImageBox = styled(Box)({
+    width: '100%',
+    height: '400px',
+    objectFit: 'cover'
+});
+
+const StyledBox = styled(Box)({
+    marginTop: '130px',
+    paddingLeft: '4.0rem',
+    paddingRight: '4.0rem',
+});
+
+const BordersButton = styled(Button)({
+    boxShadow: '3px 2px 8px 3px rgba(0,0,0,0.1)',
+    marginLeft: '5px',
+    marginRight: '5px',
+    paddingLeft: '20px',
+    paddingRight: '20px'
+});
+
+const StyledGrid = styled(Grid)({
+    marginTop: '50px',
+});
+
+const StyledName = styled(Typography)({
+    marginBottom: '20px',
+});
+
+const StyledTitle = styled(Typography)({
+    marginTop: '10px',
+    marginBottom: '10px',
+});
+
+const StyledInfo = styled(Typography)({
+    marginLeft: '5px',
+    marginRight: '5px',
+});
+
+const StyledBordersTitle = styled(Typography)({
+    marginTop: '50px',
+    marginBottom: '50px',
+})
 export default function DetailsContainer() {
     const navigate = useNavigate();
     function handleClick(event) {
         navigate('/react');
     }
     return (
-        <Box sx={{ mt: '130px', px: '4.0rem' }}>
-            <Button variant="text" sx={{ boxShadow: 3, mb: '50px', px: '30px' }} color="light" onClick={handleClick}>
+        <StyledBox>
+            <BackButton variant="text" color="light" onClick={handleClick}>
                 <KeyboardBackspaceRoundedIcon />
                 Back
-            </Button>
+            </BackButton>
             <Grid container spacing={10}>
                 <Grid item sm={12} md={6} lg={6}>
-                    <Box component="img" sx={{width: '100%',height: '400px', objectFit: 'cover'}}
-                        alt="Brazil"
-                        src="https://flagcdn.com/be.svg" />
+                    <StyledImageBox component="img" alt="Belgium" src="https://flagcdn.com/be.svg" />
                 </Grid>
-                <Grid item sm={12} md={6} lg={6} sx={{ mt: '50px' }}>
+                <StyledGrid item sm={12} md={6} lg={6}>
                     <ThemeProvider theme={DETAILS_THEME}>
-                        <Typography variant="h2" component="div" sx={{ mb: '20px' }}>Belgium</Typography>
+                        <StyledName variant="h2" component="div">Belgium</StyledName>
                         <Grid container spacing={1}>
                             <Grid item sm={12} md={6} lg={6}>
-                                <Typography variant="h3" component="div" sx={{ my: '10px' }}>
+                                <StyledTitle variant="h3" component="div">
                                     Native Name:
-                                    <Typography variant="h4" component="span" sx={{ mx: '5px' }}>Belgien</Typography>
-                                </Typography>
+                                    <StyledInfo variant="h4" component="span">Belgien</StyledInfo>
+                                </StyledTitle>
 
-                                <Typography variant="h3" component="div" sx={{ my: '10px' }}>
+                                <StyledTitle variant="h3" component="div">
                                     Population:
-                                    <Typography variant="h4" component="span" sx={{ mx: '5px' }}>11,555,997</Typography>
-                                </Typography>
+                                    <StyledInfo variant="h4" component="span">11,555,997</StyledInfo>
+                                </StyledTitle>
 
-                                <Typography variant="h3" component="div" sx={{ my: '10px' }}>
+                                <StyledTitle variant="h3" component="div">
                                     Region:
-                                    <Typography variant="h4" component="span" sx={{ mx: '5px' }}>Europe</Typography>
-                                </Typography>
+                                    <StyledInfo variant="h4" component="span">Europe</StyledInfo>
+                                </StyledTitle>
 
-                                <Typography variant="h3" component="div" sx={{ my: '10px' }}>
+                                <StyledTitle variant="h3" component="div">
                                     Sub Region:
-                                    <Typography variant="h4" component="span" sx={{ mx: '5px' }}>Western Europe</Typography>
-                                </Typography>
+                                    <StyledInfo variant="h4" component="span">Western Europe</StyledInfo>
+                                </StyledTitle>
 
-                                <Typography variant="h3" component="div" sx={{ my: '10px' }}>
+                                <StyledTitle variant="h3" component="div">
                                     Capital:
-                                    <Typography variant="h4" component="span" sx={{ mx: '5px' }}>Brussels</Typography>
-                                </Typography>
+                                    <StyledInfo variant="h4" component="span">Brussels</StyledInfo>
+                                </StyledTitle>
                             </Grid>
                             <Grid item sm={12} md={6} lg={6}>
-                                <Typography variant="h3" component="div" sx={{ my: '10px' }}>
+                                <StyledTitle variant="h3" component="div">
                                     Top Level Domain:
-                                    <Typography variant="h4" component="span" sx={{ mx: '5px' }}>.be</Typography>
-                                </Typography>
+                                    <StyledInfo variant="h4" component="span">.be</StyledInfo>
+                                </StyledTitle>
 
-                                <Typography variant="h3" component="div" sx={{ my: '10px' }}>
+                                <StyledTitle variant="h3" component="div">
                                     Currencies:
-                                    <Typography variant="h4" component="span" sx={{ mx: '5px' }}>Euro</Typography>
-                                </Typography>
+                                    <StyledInfo variant="h4" component="span">Euro</StyledInfo>
+                                </StyledTitle>
 
-                                <Typography variant="h3" component="div" sx={{ my: '10px' }}>
+                                <StyledTitle variant="h3" component="div">
                                     Languages:
-                                    <Typography variant="h4" component="span" sx={{ mx: '5px' }}>German, French, Dutch</Typography>
-                                </Typography>
+                                    <StyledInfo variant="h4" component="span">German, French, Dutch</StyledInfo>
+                                </StyledTitle>
                             </Grid>
                         </Grid>
-                        <Typography variant="h3" component="div" sx={{ my: '50px' }}>
+                        <StyledBordersTitle variant="h3" component="div">
                             Border Countries:
-                            <Typography variant="h4" component="span" sx={{ mx: '5px' }}>
-                                <Button variant="text" sx={{ boxShadow: 3, mx: '5px', px: '20px' }} color="light">France</Button>
-                                <Button variant="text" sx={{ boxShadow: 3, mx: '5px', px: '20px' }} color="light">Germany</Button>
-                                <Button variant="text" sx={{ boxShadow: 3, mx: '5px', px: '20px' }} color="light">Netherlands</Button>
-                            </Typography>
-                        </Typography>
+                            <StyledInfo variant="h4" component="span">
+                                <BordersButton variant="text" color="light">France</BordersButton>
+                                <BordersButton variant="text" color="light">Germany</BordersButton>
+                                <BordersButton variant="text" color="light">Netherlands</BordersButton>
+                            </StyledInfo>
+                        </StyledBordersTitle>
                     </ThemeProvider>
-                </Grid>
+                </StyledGrid>
             </Grid>
-        </Box>
+        </StyledBox>
     );
 }
