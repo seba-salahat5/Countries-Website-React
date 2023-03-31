@@ -23,25 +23,23 @@ const StyledAppBar = materialStyle(AppBar)({
   boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)'
 });
 
-function createHeaderComponent() {
-  return <HeadingLine>
-    <StyledToolbar>
-      <ThemeProvider theme={THEME}>
-        <Typography variant="h1" align="center" color="#111517">
-          Where in the world?
-        </Typography>
-        <Button color="light" variant="text">
-          <NightlightOutlinedIcon></NightlightOutlinedIcon> Dark Mode
-        </Button>
-      </ThemeProvider>
-    </StyledToolbar>
-  </HeadingLine>;
-}
-
-export default function Header() {
+export default function HeaderComponent() {
   return (
     <header>
-      <StyledAppBar>{createHeaderComponent()}</StyledAppBar>
+      <StyledAppBar>
+        <HeadingLine>
+          <StyledToolbar>
+            <ThemeProvider theme={THEME}>
+              <Typography variant="h1" align="center" color="#111517">
+                Where in the world?
+              </Typography>
+              <Button color="light" variant="text">
+                <NightlightOutlinedIcon></NightlightOutlinedIcon> Dark Mode
+              </Button>
+            </ThemeProvider>
+          </StyledToolbar>
+        </HeadingLine>
+      </StyledAppBar>
     </header>
   );
 }

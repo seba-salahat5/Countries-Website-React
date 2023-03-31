@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, Grid } from '@mui/material';
-import CountryCardComponent from './CardComponent';
+import CountryCardComponent from './CountryCardComponent';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import GermanyFlag from '../assets/de.svg';
 import AmericaFlag from '../assets/us.svg';
@@ -78,28 +78,22 @@ const countries = [
   },
 ]
 
-function GridColumn() {
-  return (
-    <React.Fragment>
-      {countries.map(country => <Grid item xs={12} sm={6} md={4} lg={3} key={country.id}>
-        <CountryCardComponent
-          flag={country.flag}
-          name={country.name}
-          population={country.population}
-          region={country.region}
-          capital={country.capital} />
-      </Grid>)}
-    </React.Fragment>
-  );
-}
-
-export default function CardsContainer() {
+export default function CardsGridComponent() {
   const isXLarge = useMediaQuery('(min-width:1750px)');
   return (
     <Box>
       <Grid container spacing={isXLarge ? 10 : 6}>
         <Grid container item spacing={isXLarge ? 10 : 6}>
-          <GridColumn />
+          <React.Fragment>
+            {countries.map(country => <Grid item xs={12} sm={6} md={4} lg={3} key={country.id}>
+              <CountryCardComponent
+                flag={country.flag}
+                name={country.name}
+                population={country.population}
+                region={country.region}
+                capital={country.capital} />
+            </Grid>)}
+          </React.Fragment>
         </Grid>
       </Grid>
     </Box>

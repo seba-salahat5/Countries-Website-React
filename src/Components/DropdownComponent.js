@@ -20,7 +20,7 @@ const StyledSelect = styled(Select)({
     boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)',
     borderRadius: 'px'
 });
-export default function RegionsDropDown() {
+export default function DropdownComponent() {
     const [Selectedregion, setSelectedRegion] = React.useState([]);
 
     const handleChange = (event) => {

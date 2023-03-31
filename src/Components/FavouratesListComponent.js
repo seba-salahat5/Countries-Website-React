@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { THEME } from '../App';
-import FavourateItemComponent from './HorizontalCardComponent';
+import FavourateItemComponent from './FavourateItemComponent';
 import GermanyFlag from '../assets/de.svg';
 import styled from 'styled-components';
 

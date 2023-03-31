@@ -6,7 +6,7 @@ import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Link } from 'react-router-dom';
 
-let starFillFlag;
+
 const StyledCard = styled(Card)({
     maxWidth: 300,
     borderRadius: '6px',
@@ -21,7 +21,7 @@ const StyledIconButton = styled(IconButton)({
     color: '#ffc400'
 });
 export default function CountryCardComponent(props) {
-    starFillFlag = props.name === "Germany";
+    let starFillFlag = props.name === "Germany";
     return (
         <StyledCard>
             <CardActionArea component={Link} to="/details">
@@ -49,15 +49,15 @@ export default function CountryCardComponent(props) {
                     </ThemeProvider>
                 </CardContent>
                 <CardActions>
-                    {favourateIcon()}
+                    <FavourateIcon starFillFlag = {starFillFlag}/>
                 </CardActions>
             </CardActionArea>
         </StyledCard>
     );
 }
 
-function favourateIcon() {
-    if (starFillFlag) {
+function FavourateIcon(props) {
+    if (props.starFillFlag) {
         return (
             <StyledIconButton aria-label="favourate">
                 <StarRoundedIcon />

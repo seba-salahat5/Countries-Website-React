@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Box, Stack, InputBase, IconButton, Paper, Grid } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import RegionsDropDown from '../Components/DropdownComponent';
-import CardsContainer from '../Components/CardsGridComponent';
-import FavouratesListComponent from '../Components/SideBarComponent';
+import CardsGridComponent from '../Components/CardsGridComponent';
+import FavouratesListComponent from '../Components/FavouratesListComponent';
 import styled from 'styled-components';
 import { styled as materialStyle } from '@mui/material/styles';
 
@@ -59,7 +59,7 @@ export default function HomeContainer() {
                             <FavouratesListComponent></FavouratesListComponent>
                         </Grid>
                         <Grid item sm={12} md={9}>
-                            <CardsContainer></CardsContainer>
+                            <CardsGridComponent></CardsGridComponent>
                         </Grid>
                     </Grid>
                 </StyledStack>
