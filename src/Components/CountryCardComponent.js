@@ -20,31 +20,31 @@ const StyledIconButton = styled(IconButton)({
     },
     color: '#ffc400'
 });
-export default function CountryCardComponent(props) {
-    let starFillFlag = props.name === "Germany";
+export default function CountryCardComponent({name, flag, population, region, capital}) {
+    let starFillFlag = name === "Germany";
     return (
         <StyledCard>
             <CardActionArea component={Link} to="/details">
                 <CardMedia
                     component="img"
-                    alt={props.name}
+                    alt={name}
                     height="140"
-                    image={props.flag}
+                    image={flag}
                 />
                 <CardContent>
                     <ThemeProvider theme={THEME}>
-                        <Typography gutterBottom variant="h5" component="div">{props.name}</Typography>
+                        <Typography gutterBottom variant="h5" component="div">{name}</Typography>
                         <Typography gutterBottom variant="h4" component="div">
                             Population:
-                            <Typography gutterBottom variant="h3" component="span">{props.population}</Typography>
+                            <Typography gutterBottom variant="h3" component="span">{population}</Typography>
                         </Typography>
                         <Typography gutterBottom variant="h4" component="div">
                             Region:
-                            <Typography gutterBottom variant="h3" component="span">{props.region}</Typography>
+                            <Typography gutterBottom variant="h3" component="span">{region}</Typography>
                         </Typography>
                         <Typography gutterBottom variant="h4" component="div">
                             Capital:
-                            <Typography gutterBottom variant="h3" component="span">{props.capital}</Typography>
+                            <Typography gutterBottom variant="h3" component="span">{capital}</Typography>
                         </Typography>
                     </ThemeProvider>
                 </CardContent>

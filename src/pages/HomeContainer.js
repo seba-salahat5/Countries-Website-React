@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { Box, Stack, InputBase, IconButton, Paper, Grid } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import React, { useEffect, useState, useMemo  } from 'react';
+import { Box, Stack, Grid } from '@mui/material';
+import SearchInputComponent from '../Components/SearchInputComponent';
 import RegionsDropDown from '../Components/DropdownComponent';
 import CardsGridComponent from '../Components/CardsGridComponent';
 import FavouratesListComponent from '../Components/FavouratesListComponent';
 import styled from 'styled-components';
-import { styled as materialStyle } from '@mui/material/styles';
+import { onFilterChange } from '../EventHandlers/EventHandlers';
 
 const StyledMainLine = styled(Stack)`
 display:flex;
@@ -33,25 +33,53 @@ padding-right: 4.5rem;
 margin-top: 130px;
 `;
 
-const StyledPaper = materialStyle(Paper)({
-    display: 'flex',
-    width: '30vw',
-    minWidth: 400,
-    boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)'
-});
-
 export default function HomeContainer() {
+    const [countries, setCountries] = useState([]);
+    const [selectedRegion, setRegion] = useState("");
+
+    const filteredCountries = useMemo(() => onFilterChange(selectedRegion, countries), [selectedRegion, countries.length])
+    
+    const fetchCountries = () => {
+        fetch("https://restcountries.com/v3.1/all")
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                setCountries(data)
+            })
+    };
+
+    useEffect(() => {
+        if(countries.length === 0)fetchCountries();
+    });
     return (
         <React.Fragment>
             <StyledBox alignItems="center">
                 <StyledMainLine direction={{ sm: 'column', md: 'row' }} spacing={'50px'}>
-                    <StyledPaper component="form">
-                        <IconButton type="button" aria-label="search">
-                            <SearchIcon />
-                        </IconButton>
-                        <InputBase placeholder="Search for a country..." />
-                    </StyledPaper>
-                    <RegionsDropDown></RegionsDropDown>
+                    <SearchInputComponent onSearchEvent=
+                        {
+                            (searchTerm) => {
+                                let url = searchTerm === '' ? `https://restcountries.com/v3.1/all` : `https://restcountries.com/v3.1/name/${searchTerm}`;
+                                fetch(url)
+                                    .then(response => {
+                                        return response.json();
+                                    })
+                                    .catch(error => console.log(error))
+                                    .then(data => {
+                                        if(!data)setCountries(null)
+                                        else setCountries(data)
+                                        
+                                    })
+                            }
+                        }
+                    />
+                    <RegionsDropDown onFilter=
+                        {
+                            (region) => {
+                                setRegion(region);
+                            }
+                        }
+                    />
                 </StyledMainLine>
                 <StyledStack direction={'row'}>
                     <Grid container spacing={{ md: 6, xl: 8 }}>
@@ -59,7 +87,7 @@ export default function HomeContainer() {
                             <FavouratesListComponent></FavouratesListComponent>
                         </Grid>
                         <Grid item sm={12} md={9}>
-                            <CardsGridComponent></CardsGridComponent>
+                            <CardsGridComponent countries={filteredCountries} selectedRegion={selectedRegion}></CardsGridComponent>
                         </Grid>
                     </Grid>
                 </StyledStack>

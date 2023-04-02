@@ -1,15 +1,6 @@
 import * as React from 'react';
-import { OutlinedInput, MenuItem, Select, FormControl } from '@mui/material';
+import { OutlinedInput, MenuItem, Select } from '@mui/material';
 import { styled } from '@mui/material/styles';
-
-const regions = [
-    'Africa',
-    'Americas',
-    'Asia',
-    'Europe',
-    'Oceania',
-    'Favourites',
-];
 
 const StyledSelect = styled(Select)({
     width: 220,
@@ -20,40 +11,34 @@ const StyledSelect = styled(Select)({
     boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)',
     borderRadius: 'px'
 });
-export default function DropdownComponent() {
-    const [Selectedregion, setSelectedRegion] = React.useState([]);
+
+export default function DropdownComponent({onFilter}) {
+    const [Selectedregion, setSelectedRegion] = React.useState('');
 
     const handleChange = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setSelectedRegion(
-            value,
-        );
+        setSelectedRegion(event.target.value);
+        onFilter(event.target.value);
     };
-
     return (
-        <FormControl variant="filled">
-            <StyledSelect
-                displayEmpty
-                value={Selectedregion}
-                onChange={handleChange}
-                input={<OutlinedInput />}
-                renderValue={(selected) => {
-                    if (selected.length === 0) {
-                        return 'Filter By:';
-                    }
-                    return selected;
-                }}>
-                <MenuItem disabled value="">
-                    <em>Filter By:</em>
-                </MenuItem>
-                {regions.map((region) => (
-                    <MenuItem key={region} value={region}>
-                        {region}
-                    </MenuItem>
-                ))}
-            </StyledSelect>
-        </FormControl>
+        <StyledSelect
+            displayEmpty
+            value={Selectedregion}
+            onChange= {handleChange}
+            input={<OutlinedInput />}
+            renderValue={(selected) => {
+                if (selected.length === 0) {
+                    return "Filter By:";
+                }
+                return selected;
+            }}>
+            <MenuItem disabled value=""><em>Filter By:</em></MenuItem>
+            <MenuItem value="No Filter">No Filter</MenuItem>
+            <MenuItem value="Africa">Africa</MenuItem>
+            <MenuItem value="Americas">Americas</MenuItem>
+            <MenuItem value="Asia">Asia</MenuItem>
+            <MenuItem value="Europe">Europe</MenuItem>
+            <MenuItem value="Oceania">Oceania</MenuItem>
+            <MenuItem value="Favourites">Favourites</MenuItem>
+        </StyledSelect>
     );
 }
