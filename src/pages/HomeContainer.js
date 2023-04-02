@@ -36,7 +36,7 @@ margin-top: 130px;
 export default function HomeContainer() {
     const [countries, setCountries] = useState([]);
     const [selectedRegion, setRegion] = useState("");
-
+    const [countriesFetchFlag, setFetchFlag] = useState(true);
     const filteredCountries = useMemo(() => onFilterChange(selectedRegion, countries), [selectedRegion, countries.length])
     
     const fetchCountries = () => {
@@ -50,7 +50,7 @@ export default function HomeContainer() {
     };
 
     useEffect(() => {
-        if(countries.length === 0)fetchCountries();
+        if(countriesFetchFlag && countries.length===0)fetchCountries();
     });
     return (
         <React.Fragment>
@@ -62,13 +62,20 @@ export default function HomeContainer() {
                                 let url = searchTerm === '' ? `https://restcountries.com/v3.1/all` : `https://restcountries.com/v3.1/name/${searchTerm}`;
                                 fetch(url)
                                     .then(response => {
-                                        return response.json();
+                                        switch(response.status)
+                                        {
+                                            case 404: 
+                                                setFetchFlag(false)
+                                                return [];
+                                            case 200:
+                                                return response.json();
+                                            default: 
+                                                return null;
+                                        }
                                     })
                                     .catch(error => console.log(error))
                                     .then(data => {
-                                        if(!data)setCountries(null)
-                                        else setCountries(data)
-                                        
+                                        setCountries(data)
                                     })
                             }
                         }
