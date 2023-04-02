@@ -87,7 +87,7 @@ export default function HomeContainer() {
                             <FavouratesListComponent></FavouratesListComponent>
                         </Grid>
                         <Grid item sm={12} md={9}>
-                            <CardsGridComponent countries={filteredCountries} selectedRegion={selectedRegion}></CardsGridComponent>
+                            <CardsGridComponent countries={filteredCountries}></CardsGridComponent>
                         </Grid>
                     </Grid>
                 </StyledStack>
