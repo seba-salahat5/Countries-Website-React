@@ -2,6 +2,8 @@ import React from 'react'
 import HeaderComponent from './Components/HeaderComponent';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Routes, Route } from 'react-router-dom';
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import HomeContainer from './pages/HomeContainer';
 import DetailsContainer from './pages/DetailsContainer';
@@ -48,15 +50,17 @@ export const THEME = createTheme({
 });
 function App() {
   return (
-    <ThemeProvider theme={THEME}>
-      <React.Fragment>
-        <HeaderComponent />
-        <Routes>
-          <Route path="/react" element={<HomeContainer />} />
-          <Route path="details" element={<DetailsContainer />} />
-        </Routes>
-      </React.Fragment>
-    </ThemeProvider>
+    <DndProvider backend={HTML5Backend}>
+      <ThemeProvider theme={THEME}>
+        <React.Fragment>
+          <HeaderComponent />
+          <Routes>
+            <Route path="/react" element={<HomeContainer />} />
+            <Route path="details" element={<DetailsContainer />} />
+          </Routes>
+        </React.Fragment>
+      </ThemeProvider>
+    </DndProvider>
   );
 }
 

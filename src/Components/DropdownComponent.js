@@ -12,7 +12,18 @@ const StyledSelect = styled(Select)({
     borderRadius: 'px'
 });
 
-export default function DropdownComponent({onFilter}) {
+const regions =
+    [
+        "No Filter",
+        "Africa",
+        "Americas",
+        "Asia",
+        "Europe",
+        "Oceania",
+        "Favourites"
+    ];
+
+export default function DropdownComponent({ onFilter }) {
     const [Selectedregion, setSelectedRegion] = React.useState('');
 
     const handleChange = (event) => {
@@ -23,7 +34,7 @@ export default function DropdownComponent({onFilter}) {
         <StyledSelect
             displayEmpty
             value={Selectedregion}
-            onChange= {handleChange}
+            onChange={handleChange}
             input={<OutlinedInput />}
             renderValue={(selected) => {
                 if (selected.length === 0) {
@@ -32,13 +43,11 @@ export default function DropdownComponent({onFilter}) {
                 return selected;
             }}>
             <MenuItem disabled value=""><em>Filter By:</em></MenuItem>
-            <MenuItem value="No Filter">No Filter</MenuItem>
-            <MenuItem value="Africa">Africa</MenuItem>
-            <MenuItem value="Americas">Americas</MenuItem>
-            <MenuItem value="Asia">Asia</MenuItem>
-            <MenuItem value="Europe">Europe</MenuItem>
-            <MenuItem value="Oceania">Oceania</MenuItem>
-            <MenuItem value="Favourites">Favourites</MenuItem>
+            {regions.map((region) => (
+                <MenuItem key={region} value={region}>
+                    {region}
+                </MenuItem>
+            ))}
         </StyledSelect>
     );
 }

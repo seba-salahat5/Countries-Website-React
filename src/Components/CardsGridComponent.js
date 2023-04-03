@@ -3,8 +3,7 @@ import { Box, Grid } from '@mui/material';
 import CountryCardComponent from './CountryCardComponent';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-export default function CardsGridComponent({countries}) {
-  console.log(countries);
+export default function CardsGridComponent({countries, favourates, onFavourateChange}) {
   const isXLarge = useMediaQuery('(min-width:1750px)');
     if(countries.length === 0)
     {
@@ -16,12 +15,7 @@ export default function CardsGridComponent({countries}) {
         <Grid container item spacing={isXLarge ? 10 : 6}>
           <React.Fragment>
             {countries.map(country => <Grid item xs={12} sm={6} md={4} lg={3} key={country.cca2}>
-              <CountryCardComponent
-                flag={country.flags.svg}
-                name={country.name.common}
-                population={country.population}
-                region={country.region}
-                capital={country.capital} />
+              <CountryCardComponent country={country} favourates={favourates} onFavourateChange={onFavourateChange} />
             </Grid>)}
           </React.Fragment>
         </Grid>

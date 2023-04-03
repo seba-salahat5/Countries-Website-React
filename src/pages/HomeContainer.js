@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo  } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Box, Stack, Grid } from '@mui/material';
 import SearchInputComponent from '../Components/SearchInputComponent';
 import RegionsDropDown from '../Components/DropdownComponent';
@@ -37,8 +37,12 @@ export default function HomeContainer() {
     const [countries, setCountries] = useState([]);
     const [selectedRegion, setRegion] = useState("");
     const [countriesFetchFlag, setFetchFlag] = useState(true);
-    const filteredCountries = useMemo(() => onFilterChange(selectedRegion, countries), [selectedRegion, countries.length])
-    
+
+    const favourates = JSON.parse(localStorage.getItem('favouriteList')) != null ? JSON.parse(localStorage.getItem('favouriteList')) : [];
+    const [favouriteList, setFavouriteList] = useState(favourates);
+
+    const filteredCountries = useMemo(() => onFilterChange(selectedRegion, countries, favouriteList), [selectedRegion, countries.length, favouriteList.length])
+
     const fetchCountries = () => {
         fetch("https://restcountries.com/v3.1/all")
             .then(response => {
@@ -50,8 +54,13 @@ export default function HomeContainer() {
     };
 
     useEffect(() => {
-        if(countriesFetchFlag && countries.length===0)fetchCountries();
+        if (countriesFetchFlag && countries.length === 0) fetchCountries();
     });
+
+    useEffect(() => {
+        localStorage.setItem('favouriteList', JSON.stringify(favouriteList));
+    }, [favouriteList]);
+
     return (
         <React.Fragment>
             <StyledBox alignItems="center">
@@ -62,14 +71,13 @@ export default function HomeContainer() {
                                 let url = searchTerm === '' ? `https://restcountries.com/v3.1/all` : `https://restcountries.com/v3.1/name/${searchTerm}`;
                                 fetch(url)
                                     .then(response => {
-                                        switch(response.status)
-                                        {
-                                            case 404: 
+                                        switch (response.status) {
+                                            case 404:
                                                 setFetchFlag(false)
                                                 return [];
                                             case 200:
                                                 return response.json();
-                                            default: 
+                                            default:
                                                 return null;
                                         }
                                     })
@@ -91,10 +99,22 @@ export default function HomeContainer() {
                 <StyledStack direction={'row'}>
                     <Grid container spacing={{ md: 6, xl: 8 }}>
                         <Grid item md={3}>
-                            <FavouratesListComponent></FavouratesListComponent>
+                            <FavouratesListComponent favourites={favouriteList}
+                                onFavourateChange=
+                                {
+                                    (Favourites) => {
+                                        setFavouriteList(Favourites);
+                                    }
+                                }
+                                />
                         </Grid>
                         <Grid item sm={12} md={9}>
-                            <CardsGridComponent countries={filteredCountries}></CardsGridComponent>
+                            <CardsGridComponent countries={filteredCountries} favourates={favouriteList}
+                                onFavourateChange={
+                                    (Favourites) => {
+                                        setFavouriteList(Favourites);
+                                    }
+                                } />
                         </Grid>
                     </Grid>
                 </StyledStack>
