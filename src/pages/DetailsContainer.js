@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Box, Typography, Button } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import KeyboardBackspaceRoundedIcon from '@mui/icons-material/KeyboardBackspaceRounded';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const DETAILS_THEME = createTheme({
     palette: {
@@ -81,80 +81,128 @@ const StyledInfo = styled(Typography)({
 const StyledBordersTitle = styled(Typography)({
     marginTop: '50px',
     marginBottom: '50px',
-})
+});
+
 export default function DetailsContainer() {
+    const location = useLocation();
+    const countryCode = location.state;
+
+    const [countryInfo, setCountry] = useState([]);
+    const [countryBorders, setBorders] = useState([]);
+
+    const fetchCountry = () => {
+        fetch(`https://restcountries.com/v3.1/alpha/${countryCode}`)
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                setCountry(data);
+                fetchBorders(data[0].borders)
+            })
+    };
+
+    const fetchBorders = (borders) => {
+        let bordersList = [];
+        if (borders) {
+            const promises = [];
+            for (let i = 0; i < borders.length; i++) {
+                const promise = fetch(`https://restcountries.com/v3.1/alpha/${borders[i]}`)
+                    .then(response => response.json());
+                promises.push(promise);
+            }
+
+            Promise.all(promises).then(
+                results => {
+                    results.forEach(border => bordersList.push(border[0].name.common));
+                }
+            );
+            setBorders(bordersList);
+        }
+    }
+
+    useEffect(() => {
+        if (countryInfo.length === 0) {
+            fetchCountry();
+        }
+    });
+
     const navigate = useNavigate();
     function handleClick(event) {
         navigate('/react');
     }
-    return (
-        <StyledBox>
-            <BackButton variant="text" color="light" onClick={handleClick}>
-                <KeyboardBackspaceRoundedIcon />
-                Back
-            </BackButton>
-            <Grid container spacing={10}>
-                <Grid item sm={12} md={6} lg={6}>
-                    <StyledImageBox component="img" alt="Belgium" src="https://flagcdn.com/be.svg" />
+
+    if (countryInfo[0]) {
+        console.log(countryBorders);
+        return (
+            <StyledBox>
+                <BackButton variant="text" color="light" onClick={handleClick}>
+                    <KeyboardBackspaceRoundedIcon />
+                    Back
+                </BackButton>
+                <Grid container spacing={10}>
+                    <Grid item sm={12} md={6} lg={6}>
+                        <StyledImageBox component="img" alt={countryInfo[0].name.common} src={countryInfo[0].flags.svg} />
+                    </Grid>
+                    <StyledGrid item sm={12} md={6} lg={6}>
+                        <ThemeProvider theme={DETAILS_THEME}>
+                            <StyledName variant="h2" component="div">{countryInfo[0].name.common}</StyledName>
+                            <Grid container spacing={1}>
+                                <Grid item sm={12} md={6} lg={6}>
+                                    <StyledTitle variant="h3" component="div">
+                                        Native Name:
+                                        <StyledInfo variant="h4" component="span">{Object.entries(countryInfo[0].name.nativeName)[0][1].common}</StyledInfo>
+                                    </StyledTitle>
+
+                                    <StyledTitle variant="h3" component="div">
+                                        Population:
+                                        <StyledInfo variant="h4" component="span">{countryInfo[0].population}</StyledInfo>
+                                    </StyledTitle>
+
+                                    <StyledTitle variant="h3" component="div">
+                                        Region:
+                                        <StyledInfo variant="h4" component="span">{countryInfo[0].region}</StyledInfo>
+                                    </StyledTitle>
+
+                                    <StyledTitle variant="h3" component="div">
+                                        Sub Region:
+                                        <StyledInfo variant="h4" component="span">{countryInfo[0].subregion}</StyledInfo>
+                                    </StyledTitle>
+
+                                    <StyledTitle variant="h3" component="div">
+                                        Capital:
+                                        <StyledInfo variant="h4" component="span">{countryInfo[0].capital}</StyledInfo>
+                                    </StyledTitle>
+                                </Grid>
+                                <Grid item sm={12} md={6} lg={6}>
+                                    <StyledTitle variant="h3" component="div">
+                                        Top Level Domain:
+                                        <StyledInfo variant="h4" component="span">{countryInfo[0].tld}</StyledInfo>
+                                    </StyledTitle>
+
+                                    <StyledTitle variant="h3" component="div">
+                                        Currencies:
+                                        <StyledInfo variant="h4" component="span">{Object.entries(countryInfo[0].currencies)[0][1].name}</StyledInfo>
+                                    </StyledTitle>
+
+                                    <StyledTitle variant="h3" component="div">
+                                        Languages:
+                                        <StyledInfo variant="h4" component="span">{Object.values(countryInfo[0].languages).join(', ')}</StyledInfo>
+                                    </StyledTitle>
+                                </Grid>
+                            </Grid>
+                            <StyledBordersTitle variant="h3" component="div">
+                                Border Countries:
+                                <StyledInfo variant="h4" component="span">
+                                    {countryBorders.map((border, index) => {
+                                        return <BordersButton key={index} variant="text" color="light">{border}</BordersButton>
+                                    })}
+                                </StyledInfo>
+                            </StyledBordersTitle>
+                        </ThemeProvider>
+                    </StyledGrid>
                 </Grid>
-                <StyledGrid item sm={12} md={6} lg={6}>
-                    <ThemeProvider theme={DETAILS_THEME}>
-                        <StyledName variant="h2" component="div">Belgium</StyledName>
-                        <Grid container spacing={1}>
-                            <Grid item sm={12} md={6} lg={6}>
-                                <StyledTitle variant="h3" component="div">
-                                    Native Name:
-                                    <StyledInfo variant="h4" component="span">Belgien</StyledInfo>
-                                </StyledTitle>
-
-                                <StyledTitle variant="h3" component="div">
-                                    Population:
-                                    <StyledInfo variant="h4" component="span">11,555,997</StyledInfo>
-                                </StyledTitle>
-
-                                <StyledTitle variant="h3" component="div">
-                                    Region:
-                                    <StyledInfo variant="h4" component="span">Europe</StyledInfo>
-                                </StyledTitle>
-
-                                <StyledTitle variant="h3" component="div">
-                                    Sub Region:
-                                    <StyledInfo variant="h4" component="span">Western Europe</StyledInfo>
-                                </StyledTitle>
-
-                                <StyledTitle variant="h3" component="div">
-                                    Capital:
-                                    <StyledInfo variant="h4" component="span">Brussels</StyledInfo>
-                                </StyledTitle>
-                            </Grid>
-                            <Grid item sm={12} md={6} lg={6}>
-                                <StyledTitle variant="h3" component="div">
-                                    Top Level Domain:
-                                    <StyledInfo variant="h4" component="span">.be</StyledInfo>
-                                </StyledTitle>
-
-                                <StyledTitle variant="h3" component="div">
-                                    Currencies:
-                                    <StyledInfo variant="h4" component="span">Euro</StyledInfo>
-                                </StyledTitle>
-
-                                <StyledTitle variant="h3" component="div">
-                                    Languages:
-                                    <StyledInfo variant="h4" component="span">German, French, Dutch</StyledInfo>
-                                </StyledTitle>
-                            </Grid>
-                        </Grid>
-                        <StyledBordersTitle variant="h3" component="div">
-                            Border Countries:
-                            <StyledInfo variant="h4" component="span">
-                                <BordersButton variant="text" color="light">France</BordersButton>
-                                <BordersButton variant="text" color="light">Germany</BordersButton>
-                                <BordersButton variant="text" color="light">Netherlands</BordersButton>
-                            </StyledInfo>
-                        </StyledBordersTitle>
-                    </ThemeProvider>
-                </StyledGrid>
-            </Grid>
-        </StyledBox>
-    );
+            </StyledBox>
+        );
+    }
+    else return (<StyledBox />);
 }

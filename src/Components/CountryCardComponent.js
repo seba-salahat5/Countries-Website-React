@@ -4,7 +4,7 @@ import { ThemeProvider, styled } from '@mui/material/styles';
 import { THEME } from '../App';
 import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
 import { ItemTypes } from '../Constants';
 import { useDrag } from 'react-dnd';
@@ -24,7 +24,8 @@ const StyledIconButton = styled(IconButton)({
     color: '#ffc400'
 });
 export default function CountryCardComponent({ country, favourates, onFavourateChange }) {
-    let starFillFlag = favourates.some((favCountry) => favCountry.cca2 === country.cca2);
+
+    //--------------------------- Drag Functionality ------------------------------------
     const [{ isDragging }, drag] = useDrag(() => ({
         type: ItemTypes.CARD,
         item: { draggedCountry: country },
@@ -33,6 +34,9 @@ export default function CountryCardComponent({ country, favourates, onFavourateC
         }),
     }));
     const opacity = isDragging ? 0.5 : 1;
+
+    //---------------------------- Add / Remove Favourates by Icon -----------------------
+    let starFillFlag = favourates.some((favCountry) => favCountry.cca2 === country.cca2);
     const handleClick = (event) => {
         if(!starFillFlag){
             onFavourateChange([...favourates, country]); 
@@ -43,9 +47,10 @@ export default function CountryCardComponent({ country, favourates, onFavourateC
 
     };
 
+
     return (
         <StyledCard ref={drag} sx={{ opacity: opacity }}>
-            <CardActionArea component={Link} to="/details">
+            <CardActionArea component={Link} to="/details" state={country.cca2}>
                 <CardMedia
                     component="img"
                     alt={country.name.common}
