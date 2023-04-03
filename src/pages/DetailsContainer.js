@@ -132,7 +132,6 @@ export default function DetailsContainer() {
     }
 
     if (countryInfo[0]) {
-        console.log(countryBorders);
         return (
             <StyledBox>
                 <BackButton variant="text" color="light" onClick={handleClick}>

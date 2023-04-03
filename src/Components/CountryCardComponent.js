@@ -4,7 +4,7 @@ import { ThemeProvider, styled } from '@mui/material/styles';
 import { THEME } from '../App';
 import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { ItemTypes } from '../Constants';
 import { useDrag } from 'react-dnd';
@@ -38,15 +38,8 @@ export default function CountryCardComponent({ country, favourates, onFavourateC
     //---------------------------- Add / Remove Favourates by Icon -----------------------
     let starFillFlag = favourates.some((favCountry) => favCountry.cca2 === country.cca2);
     const handleClick = (event) => {
-        if(!starFillFlag){
-            onFavourateChange([...favourates, country]); 
-        }
-        else{
-            onFavourateChange(favourates.filter(favCountry => favCountry.cca2 !== country.cca2)) 
-        }
-
+        starFillFlag ? onFavourateChange(favourates.filter(favCountry => favCountry.cca2 !== country.cca2)) : onFavourateChange([...favourates, country]);
     };
-
 
     return (
         <StyledCard ref={drag} sx={{ opacity: opacity }}>

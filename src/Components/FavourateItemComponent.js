@@ -11,10 +11,11 @@ padding-top:10px;
 width: 100%;
 display:flex;
 justify-content: space-between;
+align-items: center;
 `;
 
 const StyledBox = styled(Box)`
-width: 60px;
+width: 5vw;
 height: 25px;
 border-radius: 7px;
 object-fit: cover;
@@ -24,7 +25,7 @@ const StyledIcon = materialStyle(CancelIcon)({
     color: '#b0b0b0',
     height: '20px'
 });
-export default function FavourateItemComponent({country, removeFromFavourites, favourates}) {
+export default function FavourateItemComponent({ country, removeFromFavourites, favourates }) {
     const handleClick = (event) => {
         removeFromFavourites(favourates.filter(favCountry => favCountry.cca2 !== country.cca2));
     };
@@ -42,7 +43,6 @@ export default function FavourateItemComponent({country, removeFromFavourites, f
             <IconButton onClick={handleClick}>
                 <StyledIcon />
             </IconButton>
-            
         </StyledStack>
 
     );

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
-import {InputBase, IconButton, Paper} from '@mui/material';
+import { InputBase, IconButton, Paper } from '@mui/material';
 import { styled as materialStyle } from '@mui/material/styles';
 
 const StyledPaper = materialStyle(Paper)({
@@ -11,7 +11,7 @@ const StyledPaper = materialStyle(Paper)({
 });
 
 let debounceDelay;
-export default function SearchInputComponent({onSearchEvent}) {
+export default function SearchInputComponent({ onSearchEvent }) {
     const handleSearch = async (event) => {
         clearTimeout(debounceDelay);
         debounceDelay = setTimeout(() => {

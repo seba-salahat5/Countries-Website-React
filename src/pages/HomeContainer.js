@@ -5,7 +5,7 @@ import RegionsDropDown from '../Components/DropdownComponent';
 import CardsGridComponent from '../Components/CardsGridComponent';
 import FavouratesListComponent from '../Components/FavouratesListComponent';
 import styled from 'styled-components';
-import { onFilterChange } from '../EventHandlers/EventHandlers';
+import { onFilterChange } from '../filterFunctions';
 
 const StyledMainLine = styled(Stack)`
 display:flex;
@@ -106,7 +106,7 @@ export default function HomeContainer() {
                                         setFavouriteList(Favourites);
                                     }
                                 }
-                                />
+                            />
                         </Grid>
                         <Grid item sm={12} md={9}>
                             <CardsGridComponent countries={filteredCountries} favourates={favouriteList}

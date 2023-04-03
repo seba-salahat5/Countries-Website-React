@@ -3,13 +3,12 @@ import { Box, Grid } from '@mui/material';
 import CountryCardComponent from './CountryCardComponent';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-export default function CardsGridComponent({countries, favourates, onFavourateChange}) {
+export default function CardsGridComponent({ countries, favourates, onFavourateChange }) {
   const isXLarge = useMediaQuery('(min-width:1750px)');
-    if(countries.length === 0)
-    {
-      return (<h5>Result Not Found</h5>);
-    }
-    return (
+  if (countries.length === 0) {
+    return (<h5>Result Not Found</h5>);
+  }
+  return (
     <Box>
       <Grid container spacing={isXLarge ? 10 : 6}>
         <Grid container item spacing={isXLarge ? 10 : 6}>
