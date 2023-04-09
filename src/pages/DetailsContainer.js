@@ -149,7 +149,7 @@ export default function DetailsContainer() {
 
     const navigate = useNavigate();
     function handleClick(event) {
-        navigate('/home');
+        navigate('/react');
     }
 
     if (countryInfo[0]) {

@@ -19,7 +19,7 @@ export default function PageWraper() {
       <ThemeProvider theme={THEME}>
         <HeaderComponent />
         <Routes>
-          <Route path="/home" element={<HomeContainer />} />
+          <Route path="/react" element={<HomeContainer />} />
           <Route path="details" element={<DetailsContainer />} />
         </Routes>
       </ThemeProvider>
