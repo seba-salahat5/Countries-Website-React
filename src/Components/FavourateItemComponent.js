@@ -1,31 +1,29 @@
 import * as React from 'react';
 import { Box, Stack, Typography, IconButton } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
-import { THEME } from '../App';
+import { ThemeProvider, styled } from '@mui/material/styles';
+import { THEME } from '../pages/PageWraper';
 import CancelIcon from '@mui/icons-material/Cancel';
-import styled from 'styled-components';
-import { styled as materialStyle } from '@mui/material/styles';
 
-const StyledStack = styled(Stack)`
-padding-top:10px;
-width: 100%;
-display:flex;
-justify-content: space-between;
-align-items: center;
-`;
-
-const StyledBox = styled(Box)`
-width: 5vw;
-height: 25px;
-border-radius: 7px;
-object-fit: cover;
-`;
-
-const StyledIcon = materialStyle(CancelIcon)({
-    color: '#b0b0b0',
-    height: '20px'
-});
 export default function FavourateItemComponent({ country, removeFromFavourites, favourates }) {
+    const StyledStack = styled(Stack)({
+        paddingTop: '10px',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    });
+    
+    const StyledBox = styled(Box)({
+        width: '5vw',
+        height: '25px',
+        borderRadius: '7px',
+        objectFit: 'cover',
+    });
+    
+    const StyledIcon = styled(CancelIcon)({
+        color: '#b0b0b0',
+        height: '20px'
+    });
     const handleClick = (event) => {
         removeFromFavourites(favourates.filter(favCountry => favCountry.cca2 !== country.cca2));
     };
@@ -35,7 +33,7 @@ export default function FavourateItemComponent({ country, removeFromFavourites, 
             <Stack direction={'row'} spacing={2}>
                 <StyledBox component="img" alt="Germany" src={country.flags.svg} />
                 <ThemeProvider theme={THEME}>
-                    <Typography variant="h5" color="#111517">
+                    <Typography variant="h5">
                         {country.name.common}
                     </Typography>
                 </ThemeProvider>

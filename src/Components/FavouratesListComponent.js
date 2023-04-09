@@ -1,30 +1,32 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
-import { THEME } from '../App';
+import { ThemeProvider, styled } from '@mui/material/styles';
+import { THEME } from '../pages/PageWraper';
 import FavourateItemComponent from './FavourateItemComponent';
-import styled from 'styled-components';
-
 import { ItemTypes } from '../Constants';
 import { useDrop } from 'react-dnd';
-
-const StyledStack = styled(Stack)`
-display: 'flex';
-padding: 20px;
-`;
-
-const StyledBox = styled(Box)`
-background-color: 'white';
-display: block;
-@media (max-width: 889px) {
-    display: none;
-};
-height:100%;
-box-shadow: 3px 2px 8px 3px rgba(0,0,0,0.1);
-border-radius: 5px;
-`;
+import { DarkModeContext } from '../DarkMode/DarkModeContext';
 
 export default function FavouratesListComponent({ favourites, onFavourateChange }) {
+    const Context= useContext(DarkModeContext);
+    const StyledStack = styled(Stack)({
+        display: 'flex',
+        padding: '20px',
+    });
+
+    const StyledBox = styled(Box)({
+        color: Context.darkMode ?THEME.palette.secondary.contrastText : THEME.palette.secondary.main,
+        backgroundColor: Context.darkMode ?THEME.palette.secondary.dark : THEME.palette.secondary.light,
+        display: 'block',
+       ' @media (max-width: 889px)': {
+            display: 'none',
+        },
+        height:'100%',
+        boxShadow: '3px 2px 8px 3px rgba(0,0,0,0.1)',
+        borderRadius: '6px',
+    });
+
+
     const [{ isOver }, dropRef] = useDrop({
         accept: ItemTypes.CARD,
         collect: (monitor) => ({
@@ -43,7 +45,7 @@ export default function FavouratesListComponent({ favourites, onFavourateChange 
         <StyledBox ref={dropRef} sx={{ border: border }}>
             <StyledStack spacing={1} elevation={6} component="form" direction={'column'}>
                 <ThemeProvider theme={THEME}>
-                    <Typography variant="h1" color="#111517">
+                    <Typography variant="h1">
                         Favorates
                     </Typography>
                     {favourites.map

@@ -1,30 +1,39 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { OutlinedInput, MenuItem, Select } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { DarkModeContext } from '../DarkMode/DarkModeContext';
+import { THEME } from '../pages/PageWraper';
 
-const StyledSelect = styled(Select)({
-    width: 220,
-    height: 50,
-    backgroundColor: 'white',
-    color: '#111517',
-    fontWeight: 600,
-    boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)',
-    borderRadius: 'px'
-});
-
-const regions =
-    [
-        "No Filter",
-        "Africa",
-        "Americas",
-        "Asia",
-        "Europe",
-        "Oceania",
-        "Favourites"
-    ];
 
 export default function DropdownComponent({ onFilter }) {
     const [Selectedregion, setSelectedRegion] = React.useState('');
+    const Context = useContext(DarkModeContext);
+
+    const StyledSelect = styled(Select)({
+        width: '220px',
+        height: '100%',
+        fontWeight: 600,
+        boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)',
+        borderRadius: '6px',
+        color: Context.darkMode ?THEME.palette.secondary.contrastText : THEME.palette.secondary.main,
+        backgroundColor: Context.darkMode ?THEME.palette.secondary.dark : THEME.palette.secondary.light,
+    });
+
+    const StyledMenuItem = styled(MenuItem)({
+        color: Context.darkMode ?THEME.palette.secondary.contrastText : THEME.palette.secondary.main,
+        backgroundColor: Context.darkMode ?THEME.palette.secondary.dark : THEME.palette.secondary.light,
+        marginBottom: '0px'
+    });
+    const regions =
+        [
+            "No Filter",
+            "Africa",
+            "Americas",
+            "Asia",
+            "Europe",
+            "Oceania",
+            "Favourites"
+        ];
 
     const handleChange = (event) => {
         setSelectedRegion(event.target.value);
@@ -42,11 +51,11 @@ export default function DropdownComponent({ onFilter }) {
                 }
                 return selected;
             }}>
-            <MenuItem disabled value=""><em>Filter By:</em></MenuItem>
+            <StyledMenuItem disabled value=""><em>Filter By:</em></StyledMenuItem>
             {regions.map((region) => (
-                <MenuItem key={region} value={region}>
+                <StyledMenuItem key={region} value={region}>
                     {region}
-                </MenuItem>
+                </StyledMenuItem>
             ))}
         </StyledSelect>
     );

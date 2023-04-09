@@ -1,41 +1,46 @@
-import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
-import React from "react";
-import styled from 'styled-components';
-import { styled as materialStyle } from '@mui/material/styles';
-import { Button, Typography, Toolbar, Box, AppBar } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
-import { THEME } from '../App';
-
-const HeadingLine = styled(Box)`
-background-color: white;
-padding-left: 3.0rem;
-padding-right: 3.0rem;
-flexGrow: 1;
-`;
-
-const StyledToolbar = styled(Toolbar)`
-background-color: white;
-display: flex;
-justify-content: space-between;
-`;
-
-const StyledAppBar = materialStyle(AppBar)({
-  boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)'
-});
+import React, { useContext } from "react";
+import { Typography, Toolbar, Box, AppBar } from '@mui/material';
+import { ThemeProvider, styled } from '@mui/material/styles';
+import { THEME } from '../pages/PageWraper';
+import ThemeButton from '../Components/ThemeButton';
+import { DarkModeContext } from "../DarkMode/DarkModeContext";
 
 export default function HeaderComponent() {
+  const Context = useContext(DarkModeContext);
+
+  const HeadingLine = styled(Box)({
+    color: Context.darkMode ? THEME.palette.secondary.contrastText : THEME.palette.secondary.main,
+    backgroundColor: Context.darkMode ? THEME.palette.secondary.dark : THEME.palette.secondary.light,
+    paddingLeft: '3.0rem',
+    paddingRight: '3.0rem',
+    flexGrow: '1',
+  });
+
+  const StyledToolbar = styled(Toolbar)({
+    color: Context.darkMode ? THEME.palette.secondary.contrastText : THEME.palette.secondary.main,
+    backgroundColor: Context.darkMode ? THEME.palette.secondary.dark : THEME.palette.secondary.light,
+    display: 'flex',
+    justifyContent: 'space-between',
+  });
+
+  const StyledAppBar = styled(AppBar)({
+    boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)'
+  });
+
   return (
-    <header>
+    <header >
       <StyledAppBar>
         <HeadingLine>
           <StyledToolbar>
             <ThemeProvider theme={THEME}>
-              <Typography variant="h1" align="center" color="#111517">
+              <Typography variant="h1" align="center">
                 Where in the world?
               </Typography>
-              <Button color="light" variant="text">
-                <NightlightOutlinedIcon></NightlightOutlinedIcon> Dark Mode
-              </Button>
+              <ThemeButton ToggleMode={
+                (darkMode) => {
+                  Context.ToggleMode(darkMode);
+                }
+              } />
             </ThemeProvider>
           </StyledToolbar>
         </HeadingLine>

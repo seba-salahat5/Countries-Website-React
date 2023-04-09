@@ -1,13 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Grid, Box, Typography, Button } from '@mui/material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import KeyboardBackspaceRoundedIcon from '@mui/icons-material/KeyboardBackspaceRounded';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { DarkModeContext } from '../DarkMode/DarkModeContext';
 
 export const DETAILS_THEME = createTheme({
     palette: {
-        light: {
-            main: '#111517',
+        primary: {
+          light: '#ffffff',
+          main: '#111517',
+          dark: '#202c37',
+          contrastText: '#ffffff'
+        },
+        secondary: {
+          light: '#ffffff',
+          main: '#111517',
+          dark: '#2b3945',
+          contrastText: '#ffffff',
         },
     },
     typography: {
@@ -32,63 +42,71 @@ export const DETAILS_THEME = createTheme({
     }
 });
 
-const BackButton = styled(Button)({
-    boxShadow: '3px 2px 8px 3px rgba(0,0,0,0.1)',
-    marginBottom: '50px',
-    paddingLeft: '30px',
-    paddingRight: '30px',
-    backgroundColor: "white"
-});
-
-const StyledImageBox = styled(Box)({
-    width: '100%',
-    height: '400px',
-    objectFit: 'cover'
-});
-
-const StyledBox = styled(Box)({
-    marginTop: '130px',
-    paddingLeft: '4.0rem',
-    paddingRight: '4.0rem',
-});
-
-const BordersButton = styled(Button)({
-    boxShadow: '3px 2px 8px 3px rgba(0,0,0,0.1)',
-    marginLeft: '5px',
-    marginRight: '5px',
-    paddingLeft: '20px',
-    paddingRight: '20px'
-});
-
-const StyledGrid = styled(Grid)({
-    marginTop: '50px',
-});
-
-const StyledName = styled(Typography)({
-    marginBottom: '20px',
-});
-
-const StyledTitle = styled(Typography)({
-    marginTop: '10px',
-    marginBottom: '10px',
-});
-
-const StyledInfo = styled(Typography)({
-    marginLeft: '5px',
-    marginRight: '5px',
-});
-
-const StyledBordersTitle = styled(Typography)({
-    marginTop: '50px',
-    marginBottom: '50px',
-});
-
 export default function DetailsContainer() {
     const location = useLocation();
     const countryCode = location.state;
 
     const [countryInfo, setCountry] = useState([]);
     const [countryBorders, setBorders] = useState([]);
+
+    const Context = useContext(DarkModeContext);
+    const color = Context.darkMode ? DETAILS_THEME.palette.primary.dark : DETAILS_THEME.palette.primary.light;
+    document.documentElement.style.setProperty('--bodyColor', color);
+
+    const BackButton = styled(Button)({
+        boxShadow: '3px 2px 8px 3px rgba(0,0,0,0.1)',
+        marginBottom: '50px',
+        paddingLeft: '30px',
+        paddingRight: '30px',
+        color: Context.darkMode ?DETAILS_THEME.palette.secondary.contrastText : DETAILS_THEME.palette.secondary.main,
+        backgroundColor: Context.darkMode ?DETAILS_THEME.palette.secondary.dark : DETAILS_THEME.palette.secondary.light,
+    });
+    
+    const StyledImageBox = styled(Box)({
+        width: '100%',
+        height: '400px',
+        objectFit: 'cover'
+    });
+    
+    const StyledBox = styled(Box)({
+        paddingTop: '130px',
+        paddingLeft: '4.0rem',
+        paddingRight: '4.0rem',
+        color: Context.darkMode ?DETAILS_THEME.palette.secondary.contrastText : DETAILS_THEME.palette.secondary.main,
+    });
+    
+    const BordersButton = styled(Button)({
+        boxShadow: '3px 2px 8px 3px rgba(0,0,0,0.1)',
+        marginLeft: '5px',
+        marginRight: '5px',
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        color: Context.darkMode ?DETAILS_THEME.palette.secondary.contrastText : DETAILS_THEME.palette.secondary.main,
+        backgroundColor: Context.darkMode ?DETAILS_THEME.palette.secondary.dark : DETAILS_THEME.palette.secondary.light,
+    });
+    
+    const StyledGrid = styled(Grid)({
+        marginTop: '50px',
+    });
+    
+    const StyledName = styled(Typography)({
+        marginBottom: '20px',
+    });
+    
+    const StyledTitle = styled(Typography)({
+        marginTop: '10px',
+        marginBottom: '10px',
+    });
+    
+    const StyledInfo = styled(Typography)({
+        marginLeft: '5px',
+        marginRight: '5px',
+    });
+    
+    const StyledBordersTitle = styled(Typography)({
+        marginTop: '50px',
+        marginBottom: '50px',
+    });
 
     const fetchCountry = () => {
         fetch(`https://restcountries.com/v3.1/alpha/${countryCode}`)
@@ -134,7 +152,7 @@ export default function DetailsContainer() {
     if (countryInfo[0]) {
         return (
             <StyledBox>
-                <BackButton variant="text" color="light" onClick={handleClick}>
+                <BackButton variant="text" onClick={handleClick}>
                     <KeyboardBackspaceRoundedIcon />
                     Back
                 </BackButton>
@@ -193,7 +211,7 @@ export default function DetailsContainer() {
                                 Border Countries:
                                 <StyledInfo variant="h4" component="span">
                                     {countryBorders.map((border, index) => {
-                                        return <BordersButton key={index} variant="text" color="light">{border}</BordersButton>
+                                        return <BordersButton key={index} variant="text">{border}</BordersButton>
                                     })}
                                 </StyledInfo>
                             </StyledBordersTitle>
