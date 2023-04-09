@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Typography, Toolbar, Box, AppBar } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/material/styles';
-import { THEME } from '../pages/PageWraper';
+import { THEME } from '../App';
 import ThemeButton from '../Components/ThemeButton';
 import { DarkModeContext } from "../DarkMode/DarkModeContext";
 

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/material/styles';
-import { THEME } from '../pages/PageWraper';
+import { THEME } from '../App';
 import FavourateItemComponent from './FavourateItemComponent';
 import { ItemTypes } from '../Constants';
 import { useDrop } from 'react-dnd';
@@ -22,6 +22,7 @@ export default function FavouratesListComponent({ favourites, onFavourateChange 
             display: 'none',
         },
         height:'100%',
+        width: '20vw',
         boxShadow: '3px 2px 8px 3px rgba(0,0,0,0.1)',
         borderRadius: '6px',
     });

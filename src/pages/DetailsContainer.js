@@ -8,16 +8,16 @@ import { DarkModeContext } from '../DarkMode/DarkModeContext';
 export const DETAILS_THEME = createTheme({
     palette: {
         primary: {
-          light: '#ffffff',
-          main: '#111517',
-          dark: '#202c37',
-          contrastText: '#ffffff'
+            light: '#ffffff',
+            main: '#111517',
+            dark: '#202c37',
+            contrastText: '#ffffff'
         },
         secondary: {
-          light: '#ffffff',
-          main: '#111517',
-          dark: '#2b3945',
-          contrastText: '#ffffff',
+            light: '#ffffff',
+            main: '#111517',
+            dark: '#2b3945',
+            contrastText: '#ffffff',
         },
     },
     typography: {
@@ -44,11 +44,11 @@ export const DETAILS_THEME = createTheme({
 
 export default function DetailsContainer() {
     const location = useLocation();
-    const countryCode = location.state;
+    const params = new URLSearchParams(location.search);
+    const countryCode = params.get("countryCode");
 
     const [countryInfo, setCountry] = useState([]);
-    const [countryBorders, setBorders] = useState([]);
-
+    const [borders, setBorders] = useState([]);
     const Context = useContext(DarkModeContext);
     const color = Context.darkMode ? DETAILS_THEME.palette.primary.dark : DETAILS_THEME.palette.primary.light;
     document.documentElement.style.setProperty('--bodyColor', color);
@@ -58,51 +58,52 @@ export default function DetailsContainer() {
         marginBottom: '50px',
         paddingLeft: '30px',
         paddingRight: '30px',
-        color: Context.darkMode ?DETAILS_THEME.palette.secondary.contrastText : DETAILS_THEME.palette.secondary.main,
-        backgroundColor: Context.darkMode ?DETAILS_THEME.palette.secondary.dark : DETAILS_THEME.palette.secondary.light,
+        color: Context.darkMode ? DETAILS_THEME.palette.secondary.contrastText : DETAILS_THEME.palette.secondary.main,
+        backgroundColor: Context.darkMode ? DETAILS_THEME.palette.secondary.dark : DETAILS_THEME.palette.secondary.light,
     });
-    
+
     const StyledImageBox = styled(Box)({
         width: '100%',
         height: '400px',
         objectFit: 'cover'
     });
-    
+
     const StyledBox = styled(Box)({
         paddingTop: '130px',
         paddingLeft: '4.0rem',
         paddingRight: '4.0rem',
-        color: Context.darkMode ?DETAILS_THEME.palette.secondary.contrastText : DETAILS_THEME.palette.secondary.main,
+        paddingBottom: '15px',
+        color: Context.darkMode ? DETAILS_THEME.palette.secondary.contrastText : DETAILS_THEME.palette.secondary.main,
     });
-    
+
     const BordersButton = styled(Button)({
         boxShadow: '3px 2px 8px 3px rgba(0,0,0,0.1)',
         marginLeft: '5px',
         marginRight: '5px',
         paddingLeft: '20px',
         paddingRight: '20px',
-        color: Context.darkMode ?DETAILS_THEME.palette.secondary.contrastText : DETAILS_THEME.palette.secondary.main,
-        backgroundColor: Context.darkMode ?DETAILS_THEME.palette.secondary.dark : DETAILS_THEME.palette.secondary.light,
+        color: Context.darkMode ? DETAILS_THEME.palette.secondary.contrastText : DETAILS_THEME.palette.secondary.main,
+        backgroundColor: Context.darkMode ? DETAILS_THEME.palette.secondary.dark : DETAILS_THEME.palette.secondary.light,
     });
-    
+
     const StyledGrid = styled(Grid)({
         marginTop: '50px',
     });
-    
+
     const StyledName = styled(Typography)({
         marginBottom: '20px',
     });
-    
+
     const StyledTitle = styled(Typography)({
         marginTop: '10px',
         marginBottom: '10px',
     });
-    
+
     const StyledInfo = styled(Typography)({
         marginLeft: '5px',
         marginRight: '5px',
     });
-    
+
     const StyledBordersTitle = styled(Typography)({
         marginTop: '50px',
         marginBottom: '50px',
@@ -113,14 +114,12 @@ export default function DetailsContainer() {
             .then(response => {
                 return response.json()
             })
-            .then(data => {
+            .then(async data => {
                 setCountry(data);
-                fetchBorders(data[0].borders)
             })
     };
 
     const fetchBorders = (borders) => {
-        let bordersList = [];
         if (borders) {
             const promises = [];
             for (let i = 0; i < borders.length; i++) {
@@ -128,25 +127,29 @@ export default function DetailsContainer() {
                     .then(response => response.json());
                 promises.push(promise);
             }
-
-            Promise.all(promises).then(
-                results => {
-                    results.forEach(border => bordersList.push(border[0].name.common));
-                }
-            );
-            setBorders(bordersList);
+            Promise.all(promises)
+                .then(response => {
+                    return response;
+                })
+                .then(async data => {
+                    setBorders(data);
+                })
         }
     }
 
     useEffect(() => {
-        if (countryInfo.length === 0) {
-            fetchCountry();
+        fetchCountry();     
+    },[]);
+
+    useEffect(()=>{
+        if(countryInfo[0]){
+            fetchBorders(countryInfo[0].borders);
         }
-    });
+    },[countryInfo])
 
     const navigate = useNavigate();
     function handleClick(event) {
-        navigate('/react');
+        navigate('/home');
     }
 
     if (countryInfo[0]) {
@@ -210,8 +213,8 @@ export default function DetailsContainer() {
                             <StyledBordersTitle variant="h3" component="div">
                                 Border Countries:
                                 <StyledInfo variant="h4" component="span">
-                                    {countryBorders.map((border, index) => {
-                                        return <BordersButton key={index} variant="text">{border}</BordersButton>
+                                    {borders.map((border) => {
+                                        return <BordersButton key={border[0].cca2} variant="text">{border[0].name.common}</BordersButton>
                                     })}
                                 </StyledInfo>
                             </StyledBordersTitle>

@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import { Card, CardActions, CardActionArea, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/material/styles';
-import { THEME } from '../pages/PageWraper';
+import { THEME } from '../App';
 import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Link } from 'react-router-dom';
@@ -47,7 +47,7 @@ export default function CountryCardComponent({ country, favourates, onFavourateC
 
     return (
         <StyledCard ref={drag} sx={{ opacity: opacity }}>
-            <CardActionArea component={Link} to="/details" state={country.cca2}>
+            <CardActionArea component={Link} to={`/details?countryCode=${country.cca2}`} state= {country.cca2}>
                 <CardMedia
                     component="img"
                     alt={country.name.common}

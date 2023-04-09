@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo} from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import { Box, Stack, Grid } from '@mui/material';
 import SearchInputComponent from '../Components/SearchInputComponent';
 import RegionsDropDown from '../Components/DropdownComponent';
@@ -6,20 +6,23 @@ import CardsGridComponent from '../Components/CardsGridComponent';
 import FavouratesListComponent from '../Components/FavouratesListComponent';
 import { onFilterChange, onSearchEvent } from '../EventHandlers';
 import { styled } from '@mui/material/styles';
-import { THEME } from '../pages/PageWraper';
+import { THEME } from '../App';
 import { DarkModeContext } from '../DarkMode/DarkModeContext';
 
 export default function HomeContainer() {
     const Context = useContext(DarkModeContext);
     const [countries, setCountries] = useState([]);
     const [selectedRegion, setRegion] = useState("");
-    const [searchValue, setSearchValue] = useState(' ');
+    const [searchTerm, setSearchTerm] = useState(' ');
 
     const favourates = JSON.parse(localStorage.getItem('favouriteList')) != null ? JSON.parse(localStorage.getItem('favouriteList')) : [];
     const [favouriteList, setFavouriteList] = useState(favourates);
 
-    const filteredCountries = useMemo(() => onFilterChange(selectedRegion, countries, favouriteList), [selectedRegion, countries, favouriteList]);
-
+    const [filteredCountries, setFilteredCountries] = useState(countries);
+    useEffect(()=>{
+        setFilteredCountries(onFilterChange(selectedRegion, countries, favouriteList));
+    },[selectedRegion, countries, favouriteList])
+    
     const StyledMainLine = styled(Stack)({
         display: 'flex',
         justifyContent: 'space-between',
@@ -70,11 +73,12 @@ export default function HomeContainer() {
         <React.Fragment>
             <StyledBox alignItems="center">
                 <StyledMainLine direction={{ sm: 'column', md: 'row' }} spacing={'50px'}>
-                    <SearchInputComponent searchValue = {searchValue} onSearchEvent=
+                    <SearchInputComponent searchTerm={searchTerm} onSearchEvent= 
                         {
-                            async (searchTerm) => {
-                                setSearchValue(searchTerm);
-                                setCountries(await onSearchEvent(searchTerm));
+                            async (searchValue) => {
+                                console.log(searchValue);
+                                setSearchTerm(searchValue);
+                                setCountries(await onSearchEvent(searchValue));
                             }
                         }
                     />

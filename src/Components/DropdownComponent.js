@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
-import { OutlinedInput, MenuItem, Select } from '@mui/material';
+import { OutlinedInput, Select, MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DarkModeContext } from '../DarkMode/DarkModeContext';
-import { THEME } from '../pages/PageWraper';
+import { THEME } from '../App';
 
 
 export default function DropdownComponent({ onFilter }) {
-    const [Selectedregion, setSelectedRegion] = React.useState('');
+    const [selectedRegion, setSelectedRegion] = React.useState('');
     const Context = useContext(DarkModeContext);
 
     const StyledSelect = styled(Select)({
@@ -15,14 +15,17 @@ export default function DropdownComponent({ onFilter }) {
         fontWeight: 600,
         boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)',
         borderRadius: '6px',
-        color: Context.darkMode ?THEME.palette.secondary.contrastText : THEME.palette.secondary.main,
-        backgroundColor: Context.darkMode ?THEME.palette.secondary.dark : THEME.palette.secondary.light,
+        color: Context.darkMode ? THEME.palette.secondary.contrastText : THEME.palette.secondary.main,
+        backgroundColor: Context.darkMode ? THEME.palette.secondary.dark : THEME.palette.secondary.light,
     });
 
     const StyledMenuItem = styled(MenuItem)({
-        color: Context.darkMode ?THEME.palette.secondary.contrastText : THEME.palette.secondary.main,
-        backgroundColor: Context.darkMode ?THEME.palette.secondary.dark : THEME.palette.secondary.light,
-        marginBottom: '0px'
+        color: Context.darkMode ? THEME.palette.secondary.contrastText : THEME.palette.secondary.main,
+        backgroundColor: Context.darkMode ? THEME.palette.secondary.dark : THEME.palette.secondary.light,
+        marginBottom: '0px',
+        ":hover": {
+            backgroundColor: Context.darkMode ? '#4c6173' : '#fafafa',
+        },
     });
     const regions =
         [
@@ -42,7 +45,7 @@ export default function DropdownComponent({ onFilter }) {
     return (
         <StyledSelect
             displayEmpty
-            value={Selectedregion}
+            value={selectedRegion}
             onChange={handleChange}
             input={<OutlinedInput />}
             renderValue={(selected) => {
@@ -50,7 +53,18 @@ export default function DropdownComponent({ onFilter }) {
                     return "Filter By:";
                 }
                 return selected;
-            }}>
+            }}
+            MenuProps={{
+                PaperProps: {
+                    sx: {
+                        backgroundColor: Context.darkMode ? THEME.palette.secondary.dark : THEME.palette.secondary.light,
+                        '& .MuiMenuItem-root': {
+                            padding: '8px',
+                        },
+                    },
+                },
+            }}
+        >
             <StyledMenuItem disabled value=""><em>Filter By:</em></StyledMenuItem>
             {regions.map((region) => (
                 <StyledMenuItem key={region} value={region}>

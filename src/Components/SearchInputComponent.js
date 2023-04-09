@@ -1,13 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputBase, IconButton, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { DarkModeContext } from '../DarkMode/DarkModeContext';
-import { THEME } from '../pages/PageWraper';
+import { THEME } from '../App';
 
 let debounceDelay;
-export default function SearchInputComponent({ searchValue, onSearchEvent }) {
+export default function SearchInputComponent({searchTerm ,onSearchEvent }) {
+    const [searchValue, setSearchValue] = useState(searchTerm);
     const Context = useContext(DarkModeContext);
+    const handleSearch = (event)=>{
+        setSearchValue(event.target.value);
+        clearTimeout(debounceDelay);
+        debounceDelay = setTimeout(async () => {
+            onSearchEvent(event.target.value);
+        }, 300);
+    }
     const StyledPaper = styled(Paper)({
         display: 'flex',
         width: '30vw',
@@ -25,18 +33,12 @@ export default function SearchInputComponent({ searchValue, onSearchEvent }) {
         color: Context.darkMode ?THEME.palette.secondary.contrastText : THEME.palette.secondary.main,
     });
 
-    const handleSearch = async (event) => {
-        clearTimeout(debounceDelay);
-        debounceDelay = setTimeout(() => {
-            onSearchEvent(event.target.value);
-        }, 500);
-    };
     return (
         <StyledPaper component="form">
-            <StyledIconButton type="button" aria-label="search">
+            <StyledIconButton type="button">
                 <SearchIcon />
             </StyledIconButton>
-            <StyledInputBase fullWidth onChange={handleSearch} placeholder="Search for a country..." />
+            <StyledInputBase fullWidth value={searchValue} onChange={handleSearch} placeholder="Search for a country..." />
         </StyledPaper>
     );
 }

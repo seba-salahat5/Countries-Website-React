@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { DarkModeContext } from "../DarkMode/DarkModeContext";
 import { Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { THEME } from '../pages/PageWraper';
+import { THEME } from '../App';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 
 export default function ThemeButton({ ToggleMode }) {

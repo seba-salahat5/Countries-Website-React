@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box, Stack, Typography, IconButton } from '@mui/material';
 import { ThemeProvider, styled } from '@mui/material/styles';
-import { THEME } from '../pages/PageWraper';
+import { THEME } from '../App';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function FavourateItemComponent({ country, removeFromFavourites, favourates }) {
