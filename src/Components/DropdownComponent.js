@@ -11,7 +11,7 @@ export default function DropdownComponent({ onFilter }) {
 
     const StyledSelect = styled(Select)({
         width: '220px',
-        height: '100%',
+        height: '50px',
         fontWeight: 600,
         boxShadow: '3px 2px 8px -1px rgba(0,0,0,0.1)',
         borderRadius: '6px',
