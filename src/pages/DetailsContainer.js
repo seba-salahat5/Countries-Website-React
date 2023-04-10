@@ -78,8 +78,7 @@ export default function DetailsContainer() {
 
     const BordersButton = styled(Button)({
         boxShadow: '3px 2px 8px 3px rgba(0,0,0,0.1)',
-        marginLeft: '5px',
-        marginRight: '5px',
+        margin: '5px',
         paddingLeft: '20px',
         paddingRight: '20px',
         color: Context.darkMode ? DETAILS_THEME.palette.secondary.contrastText : DETAILS_THEME.palette.secondary.main,
